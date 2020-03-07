@@ -14,6 +14,42 @@ namespace ForumApi.Controllers
         private readonly ForumEntities db = new ForumEntities();
 
         /// <summary>
+        /// 查询所有文章 GET api/article
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("~/api/article")]
+        public ResponseData<object> ShowAllArticles()
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                // 联合查询 { 标题, 内容, 发布时间, 点赞数, 访问量, 作者昵称 }
+                var articles = from a in db.ArticleTb
+                               where a.isDel == false
+                               from u in db.RoleTb
+                               where u.roleId == a.authorId
+                               select new { a.title, a.content, a.publishTime, a.likeCount, a.viewCount, u.nickName };
+
+                if (articles != null)
+                {
+                    responseData = ResponseHelper<object>.SendSuccessResponse(articles.AsEnumerable<object>());
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("暂无文章数据");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
         /// 发布文章 POST api/article/publish
         /// </summary>
         /// <param name="entity"></param>

@@ -7,6 +7,11 @@ namespace ForumApi.Common
 {
     public class SessionHelper
     {
+        /// <summary>
+        /// 判断Session是否存在
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public static bool IsExist(string guid)
         {
             if (HttpContext.Current.Session[guid] != null)
