@@ -20,19 +20,19 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("~/api/article/publish")]
-        public ResponseData<ArticleTb> PublishNewArticle([FromBody] ArticleTb entity, string guid)
+        public ResponseData<ArticleTb> PublishNewArticle([FromBody] ArticlePostData postData)
         {
             ResponseData<ArticleTb> responseData;
 
-            if (SessionHelper.IsExist(guid))
+            if (SessionHelper.IsExist(postData.Guid))
             {
 
                 ArticleTb article = new ArticleTb()
                 {
-                    title = entity.title,
-                    content = entity.content,
+                    title = postData.Title,
+                    content = postData.Content,
                     publishTime = DateTime.Now,
-                    authorId = entity.authorId
+                    authorId = postData.AuthorId
                 };
 
                 try
@@ -59,5 +59,16 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+    }
+
+    /// <summary>
+    /// 文章操作需要接收的数据
+    /// </summary>
+    public class ArticlePostData
+    {
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public int AuthorId { get; set; }
+        public string Guid { get; set; }
     }
 }
