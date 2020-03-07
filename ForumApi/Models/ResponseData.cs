@@ -7,9 +7,18 @@ namespace ForumApi.Models
 {
     public enum StatusCode
     {
+        /// <summary>
+        /// 成功
+        /// </summary>
         SUCCESS,
-        SERVER_ERROR, // 服务器错误
-        OPERATION_ERROR // 用户操作错误
+        /// <summary>
+        /// 服务器错误
+        /// </summary>
+        SERVER_ERROR,
+        /// <summary>
+        /// 用户操作错误
+        /// </summary>
+        OPERATION_ERROR
     }
 
     /// <summary>
