@@ -59,7 +59,11 @@ namespace ForumApi.Controllers
             return responseData;
         }
 
-
+        /// <summary>
+        /// 登陆 api/login
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("~/api/Login")]
         public ResponseData<object> UserLogin([FromBody] RoleTb entity)
