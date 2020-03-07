@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="NodeTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ArticleTb">
+          <Key>
+            <PropertyRef Name="articleId" />
+          </Key>
+          <Property Name="articleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="32" Nullable="false" />
+          <Property Name="content" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="likeCount" Type="int" Nullable="false" />
+          <Property Name="viewCount" Type="int" Nullable="false" />
+          <Property Name="publishTime" Type="datetime" Nullable="false" />
+          <Property Name="authorId" Type="int" Nullable="false" />
+          <Property Name="isDel" Type="bit" Nullable="false" />
+          <Property Name="colm1" Type="nvarchar" MaxLength="16" />
+          <Property Name="colm2" Type="nvarchar" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="CommentTb">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="publishTime" Type="datetime" Nullable="false" />
+          <Property Name="content" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="likeCount" Type="int" Nullable="false" />
+          <Property Name="authorId" Type="int" Nullable="false" />
+          <Property Name="articleId" Type="int" Nullable="false" />
+          <Property Name="isDel" Type="bit" Nullable="false" />
+          <Property Name="colm1" Type="nvarchar" MaxLength="16" />
+          <Property Name="colm2" Type="nvarchar" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="RoleTb">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account" Type="varchar" MaxLength="16" Nullable="false" />
+          <Property Name="nickName" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="pwd" Type="varchar" MaxLength="64" Nullable="false" />
+          <Property Name="powerNum" Type="int" Nullable="false" />
+          <Property Name="isDel" Type="bit" Nullable="false" />
+          <Property Name="avatarUrl" Type="varchar" MaxLength="128" />
+          <Property Name="colm1" Type="nvarchar" MaxLength="16" />
+          <Property Name="colm2" Type="nvarchar" MaxLength="16" />
+        </EntityType>
+        <Association Name="FK__ArticleTb__autho__17036CC0">
+          <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
+          <End Role="ArticleTb" Type="Self.ArticleTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="ArticleTb">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CommentTb__artic__1CBC4616">
+          <End Role="ArticleTb" Type="Self.ArticleTb" Multiplicity="1" />
+          <End Role="CommentTb" Type="Self.CommentTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleTb">
+              <PropertyRef Name="articleId" />
+            </Principal>
+            <Dependent Role="CommentTb">
+              <PropertyRef Name="articleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CommentTb__autho__1BC821DD">
+          <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
+          <End Role="CommentTb" Type="Self.CommentTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="CommentTb">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NodeTestModelStoreContainer">
+          <EntitySet Name="ArticleTb" EntityType="Self.ArticleTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CommentTb" EntityType="Self.CommentTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleTb" EntityType="Self.RoleTb" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ArticleTb__autho__17036CC0" Association="Self.FK__ArticleTb__autho__17036CC0">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CommentTb__artic__1CBC4616" Association="Self.FK__CommentTb__artic__1CBC4616">
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+            <End Role="CommentTb" EntitySet="CommentTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CommentTb__autho__1BC821DD" Association="Self.FK__CommentTb__autho__1BC821DD">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="CommentTb" EntitySet="CommentTb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NodeTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ArticleTb">
+          <Key>
+            <PropertyRef Name="articleId" />
+          </Key>
+          <Property Name="articleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="likeCount" Type="Int32" Nullable="false" />
+          <Property Name="viewCount" Type="Int32" Nullable="false" />
+          <Property Name="publishTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="authorId" Type="Int32" Nullable="false" />
+          <Property Name="isDel" Type="Boolean" Nullable="false" />
+          <Property Name="colm1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="colm2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="RoleTb" Relationship="Self.FK__ArticleTb__autho__06CD04F7" FromRole="ArticleTb" ToRole="RoleTb" />
+          <NavigationProperty Name="CommentTb" Relationship="Self.FK__CommentTb__artic__0C85DE4D" FromRole="ArticleTb" ToRole="CommentTb" />
+        </EntityType>
+        <EntityType Name="CommentTb">
+          <Key>
+            <PropertyRef Name="commentId" />
+          </Key>
+          <Property Name="commentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="publishTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="content" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="likeCount" Type="Int32" Nullable="false" />
+          <Property Name="authorId" Type="Int32" Nullable="false" />
+          <Property Name="articleId" Type="Int32" Nullable="false" />
+          <Property Name="isDel" Type="Boolean" Nullable="false" />
+          <Property Name="colm1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="colm2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ArticleTb" Relationship="Self.FK__CommentTb__artic__0C85DE4D" FromRole="CommentTb" ToRole="ArticleTb" />
+          <NavigationProperty Name="RoleTb" Relationship="Self.FK__CommentTb__autho__0B91BA14" FromRole="CommentTb" ToRole="RoleTb" />
+        </EntityType>
+        <EntityType Name="RoleTb">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nickName" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pwd" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="powerNum" Type="Int32" Nullable="false" />
+          <Property Name="isDel" Type="Boolean" Nullable="false" />
+          <Property Name="colm1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="colm2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ArticleTb" Relationship="Self.FK__ArticleTb__autho__06CD04F7" FromRole="RoleTb" ToRole="ArticleTb" />
+          <NavigationProperty Name="CommentTb" Relationship="Self.FK__CommentTb__autho__0B91BA14" FromRole="RoleTb" ToRole="CommentTb" />
+          <Property Name="avatarUrl" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__ArticleTb__autho__06CD04F7">
+          <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
+          <End Role="ArticleTb" Type="Self.ArticleTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="ArticleTb">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CommentTb__artic__0C85DE4D">
+          <End Role="ArticleTb" Type="Self.ArticleTb" Multiplicity="1" />
+          <End Role="CommentTb" Type="Self.CommentTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleTb">
+              <PropertyRef Name="articleId" />
+            </Principal>
+            <Dependent Role="CommentTb">
+              <PropertyRef Name="articleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CommentTb__autho__0B91BA14">
+          <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
+          <End Role="CommentTb" Type="Self.CommentTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="CommentTb">
+              <PropertyRef Name="authorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="NodeTestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ArticleTb" EntityType="Self.ArticleTb" />
+          <EntitySet Name="CommentTb" EntityType="Self.CommentTb" />
+          <EntitySet Name="RoleTb" EntityType="Self.RoleTb" />
+          <AssociationSet Name="FK__ArticleTb__autho__06CD04F7" Association="Self.FK__ArticleTb__autho__06CD04F7">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CommentTb__artic__0C85DE4D" Association="Self.FK__CommentTb__artic__0C85DE4D">
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+            <End Role="CommentTb" EntitySet="CommentTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CommentTb__autho__0B91BA14" Association="Self.FK__CommentTb__autho__0B91BA14">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="CommentTb" EntitySet="CommentTb" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="NodeTestModelStoreContainer" CdmEntityContainer="NodeTestEntities">
+          <EntitySetMapping Name="ArticleTb">
+            <EntityTypeMapping TypeName="NodeTestModel.ArticleTb">
+              <MappingFragment StoreEntitySet="ArticleTb">
+                <ScalarProperty Name="articleId" ColumnName="articleId" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="viewCount" ColumnName="viewCount" />
+                <ScalarProperty Name="publishTime" ColumnName="publishTime" />
+                <ScalarProperty Name="authorId" ColumnName="authorId" />
+                <ScalarProperty Name="isDel" ColumnName="isDel" />
+                <ScalarProperty Name="colm1" ColumnName="colm1" />
+                <ScalarProperty Name="colm2" ColumnName="colm2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CommentTb">
+            <EntityTypeMapping TypeName="NodeTestModel.CommentTb">
+              <MappingFragment StoreEntitySet="CommentTb">
+                <ScalarProperty Name="commentId" ColumnName="commentId" />
+                <ScalarProperty Name="publishTime" ColumnName="publishTime" />
+                <ScalarProperty Name="content" ColumnName="content" />
+                <ScalarProperty Name="likeCount" ColumnName="likeCount" />
+                <ScalarProperty Name="authorId" ColumnName="authorId" />
+                <ScalarProperty Name="articleId" ColumnName="articleId" />
+                <ScalarProperty Name="isDel" ColumnName="isDel" />
+                <ScalarProperty Name="colm1" ColumnName="colm1" />
+                <ScalarProperty Name="colm2" ColumnName="colm2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleTb">
+            <EntityTypeMapping TypeName="NodeTestModel.RoleTb">
+              <MappingFragment StoreEntitySet="RoleTb">
+                <ScalarProperty Name="avatarUrl" ColumnName="avatarUrl" />
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="nickName" ColumnName="nickName" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="powerNum" ColumnName="powerNum" />
+                <ScalarProperty Name="isDel" ColumnName="isDel" />
+                <ScalarProperty Name="colm1" ColumnName="colm1" />
+                <ScalarProperty Name="colm2" ColumnName="colm2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
