@@ -13,10 +13,10 @@ namespace ForumApi.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class NodeTestEntities : DbContext
+    public partial class ForumEntities : DbContext
     {
-        public NodeTestEntities()
-            : base("name=NodeTestEntities")
+        public ForumEntities()
+            : base("name=ForumEntities")
         {
         }
     

@@ -104,7 +104,7 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="NodeTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ForumTbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="ArticleTb">
           <Key>
             <PropertyRef Name="articleId" />
@@ -190,7 +190,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="NodeTestEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ForumEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ArticleTb" EntityType="Self.ArticleTb" />
           <EntitySet Name="CommentTb" EntityType="Self.CommentTb" />
           <EntitySet Name="RoleTb" EntityType="Self.RoleTb" />
@@ -212,9 +212,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="NodeTestModelStoreContainer" CdmEntityContainer="NodeTestEntities">
+        <EntityContainerMapping StorageEntityContainer="NodeTestModelStoreContainer" CdmEntityContainer="ForumEntities">
           <EntitySetMapping Name="ArticleTb">
-            <EntityTypeMapping TypeName="NodeTestModel.ArticleTb">
+            <EntityTypeMapping TypeName="ForumTbModel.ArticleTb">
               <MappingFragment StoreEntitySet="ArticleTb">
                 <ScalarProperty Name="articleId" ColumnName="articleId" />
                 <ScalarProperty Name="title" ColumnName="title" />
@@ -230,7 +230,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CommentTb">
-            <EntityTypeMapping TypeName="NodeTestModel.CommentTb">
+            <EntityTypeMapping TypeName="ForumTbModel.CommentTb">
               <MappingFragment StoreEntitySet="CommentTb">
                 <ScalarProperty Name="commentId" ColumnName="commentId" />
                 <ScalarProperty Name="publishTime" ColumnName="publishTime" />
@@ -245,7 +245,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoleTb">
-            <EntityTypeMapping TypeName="NodeTestModel.RoleTb">
+            <EntityTypeMapping TypeName="ForumTbModel.RoleTb">
               <MappingFragment StoreEntitySet="RoleTb">
                 <ScalarProperty Name="avatarUrl" ColumnName="avatarUrl" />
                 <ScalarProperty Name="roleId" ColumnName="roleId" />
