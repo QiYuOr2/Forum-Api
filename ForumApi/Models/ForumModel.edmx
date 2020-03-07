@@ -34,6 +34,14 @@
           <Property Name="colm1" Type="nvarchar" MaxLength="16" />
           <Property Name="colm2" Type="nvarchar" MaxLength="16" />
         </EntityType>
+        <EntityType Name="LikeTb">
+          <Key>
+            <PropertyRef Name="likeId" />
+          </Key>
+          <Property Name="likeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="articleId" Type="int" Nullable="false" />
+          <Property Name="userId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="RoleTb">
           <Key>
             <PropertyRef Name="roleId" />
@@ -84,9 +92,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__LikeTb__articleI__208CD6FA">
+          <End Role="ArticleTb" Type="Self.ArticleTb" Multiplicity="1" />
+          <End Role="LikeTb" Type="Self.LikeTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleTb">
+              <PropertyRef Name="articleId" />
+            </Principal>
+            <Dependent Role="LikeTb">
+              <PropertyRef Name="articleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikeTb__userId__2180FB33">
+          <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
+          <End Role="LikeTb" Type="Self.LikeTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="LikeTb">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="NodeTestModelStoreContainer">
           <EntitySet Name="ArticleTb" EntityType="Self.ArticleTb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommentTb" EntityType="Self.CommentTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LikeTb" EntityType="Self.LikeTb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleTb" EntityType="Self.RoleTb" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__ArticleTb__autho__17036CC0" Association="Self.FK__ArticleTb__autho__17036CC0">
             <End Role="RoleTb" EntitySet="RoleTb" />
@@ -99,6 +132,14 @@
           <AssociationSet Name="FK__CommentTb__autho__1BC821DD" Association="Self.FK__CommentTb__autho__1BC821DD">
             <End Role="RoleTb" EntitySet="RoleTb" />
             <End Role="CommentTb" EntitySet="CommentTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikeTb__articleI__208CD6FA" Association="Self.FK__LikeTb__articleI__208CD6FA">
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+            <End Role="LikeTb" EntitySet="LikeTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikeTb__userId__2180FB33" Association="Self.FK__LikeTb__userId__2180FB33">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="LikeTb" EntitySet="LikeTb" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -121,6 +162,7 @@
           <Property Name="colm2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="RoleTb" Relationship="Self.FK__ArticleTb__autho__06CD04F7" FromRole="ArticleTb" ToRole="RoleTb" />
           <NavigationProperty Name="CommentTb" Relationship="Self.FK__CommentTb__artic__0C85DE4D" FromRole="ArticleTb" ToRole="CommentTb" />
+          <NavigationProperty Name="LikeTb" Relationship="ForumTbModel.FK__LikeTb__articleI__208CD6FA" FromRole="ArticleTb" ToRole="LikeTb" />
         </EntityType>
         <EntityType Name="CommentTb">
           <Key>
@@ -153,6 +195,7 @@
           <NavigationProperty Name="ArticleTb" Relationship="Self.FK__ArticleTb__autho__06CD04F7" FromRole="RoleTb" ToRole="ArticleTb" />
           <NavigationProperty Name="CommentTb" Relationship="Self.FK__CommentTb__autho__0B91BA14" FromRole="RoleTb" ToRole="CommentTb" />
           <Property Name="avatarUrl" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LikeTb" Relationship="ForumTbModel.FK__LikeTb__userId__2180FB33" FromRole="RoleTb" ToRole="LikeTb" />
         </EntityType>
         <Association Name="FK__ArticleTb__autho__06CD04F7">
           <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
@@ -206,7 +249,50 @@
             <End Role="RoleTb" EntitySet="RoleTb" />
             <End Role="CommentTb" EntitySet="CommentTb" />
           </AssociationSet>
+          <EntitySet Name="LikeTb" EntityType="ForumTbModel.LikeTb" />
+          <AssociationSet Name="FK__LikeTb__articleI__208CD6FA" Association="ForumTbModel.FK__LikeTb__articleI__208CD6FA">
+            <End Role="ArticleTb" EntitySet="ArticleTb" />
+            <End Role="LikeTb" EntitySet="LikeTb" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LikeTb__userId__2180FB33" Association="ForumTbModel.FK__LikeTb__userId__2180FB33">
+            <End Role="RoleTb" EntitySet="RoleTb" />
+            <End Role="LikeTb" EntitySet="LikeTb" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="LikeTb">
+          <Key>
+            <PropertyRef Name="likeId" />
+          </Key>
+          <Property Name="likeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="articleId" Type="Int32" Nullable="false" />
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ArticleTb" Relationship="ForumTbModel.FK__LikeTb__articleI__208CD6FA" FromRole="LikeTb" ToRole="ArticleTb" />
+          <NavigationProperty Name="RoleTb" Relationship="ForumTbModel.FK__LikeTb__userId__2180FB33" FromRole="LikeTb" ToRole="RoleTb" />
+        </EntityType>
+        <Association Name="FK__LikeTb__articleI__208CD6FA">
+          <End Type="ForumTbModel.ArticleTb" Role="ArticleTb" Multiplicity="1" />
+          <End Type="ForumTbModel.LikeTb" Role="LikeTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ArticleTb">
+              <PropertyRef Name="articleId" />
+            </Principal>
+            <Dependent Role="LikeTb">
+              <PropertyRef Name="articleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LikeTb__userId__2180FB33">
+          <End Type="ForumTbModel.RoleTb" Role="RoleTb" Multiplicity="1" />
+          <End Type="ForumTbModel.LikeTb" Role="LikeTb" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTb">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="LikeTb">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -256,6 +342,15 @@
                 <ScalarProperty Name="isDel" ColumnName="isDel" />
                 <ScalarProperty Name="colm1" ColumnName="colm1" />
                 <ScalarProperty Name="colm2" ColumnName="colm2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LikeTb">
+            <EntityTypeMapping TypeName="ForumTbModel.LikeTb">
+              <MappingFragment StoreEntitySet="LikeTb">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="articleId" ColumnName="articleId" />
+                <ScalarProperty Name="likeId" ColumnName="likeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

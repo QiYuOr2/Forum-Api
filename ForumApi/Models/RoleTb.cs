@@ -19,6 +19,7 @@ namespace ForumApi.Models
         {
             this.ArticleTb = new HashSet<ArticleTb>();
             this.CommentTb = new HashSet<CommentTb>();
+            this.LikeTb = new HashSet<LikeTb>();
         }
     
         public int roleId { get; set; }
@@ -35,5 +36,7 @@ namespace ForumApi.Models
         public virtual ICollection<ArticleTb> ArticleTb { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CommentTb> CommentTb { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LikeTb> LikeTb { get; set; }
     }
 }

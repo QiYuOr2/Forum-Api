@@ -162,6 +162,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForumModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\LikeTb.cs">
+      <DependentUpon>ForumModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ResponseData.cs" />
     <Compile Include="Models\RoleTb.cs">
       <DependentUpon>ForumModel.tt</DependentUpon>

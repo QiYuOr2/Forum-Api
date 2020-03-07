@@ -11,6 +11,9 @@
         <AssociationConnector Association="ForumTbModel.FK__ArticleTb__autho__06CD04F7" ManuallyRouted="false" />
         <AssociationConnector Association="ForumTbModel.FK__CommentTb__artic__0C85DE4D" ManuallyRouted="false" />
         <AssociationConnector Association="ForumTbModel.FK__CommentTb__autho__0B91BA14" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ForumTbModel.LikeTb" Width="1.5" PointX="8.25" PointY="1.75" />
+        <AssociationConnector Association="ForumTbModel.FK__LikeTb__articleI__208CD6FA" />
+        <AssociationConnector Association="ForumTbModel.FK__LikeTb__userId__2180FB33" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

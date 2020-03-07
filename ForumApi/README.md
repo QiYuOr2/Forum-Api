@@ -18,3 +18,7 @@ GET
 ### 发布
 
 POST 接收参数：title, content, authorId, guid
+
+### 删除
+
+POST 接收参数：articleId, guid
