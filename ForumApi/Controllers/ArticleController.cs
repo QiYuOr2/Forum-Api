@@ -30,7 +30,7 @@ namespace ForumApi.Controllers
                                where a.isDel == false
                                from u in db.RoleTb
                                where u.roleId == a.authorId
-                               select new { a.title, a.content, a.publishTime, a.likeCount, a.viewCount, u.nickName };
+                               select new { a.articleId, a.title, a.content, a.publishTime, a.likeCount, a.viewCount, u.nickName };
 
                 if (articles != null)
                 {
@@ -95,6 +95,48 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+
+        /// <summary>
+        /// 删除文章 POST api/article/delete
+        /// </summary>
+        /// <param name="postData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("~/api/article/delete")]
+        public ResponseData<ArticleTb> DeleteArticle([FromBody] ArticlePostData postData)
+        {
+            ResponseData<ArticleTb> responseData;
+
+            if (SessionHelper.IsExist(postData.Guid))
+            {
+                var article = db.ArticleTb.Where(a => a.articleId == postData.ArticleId).FirstOrDefault();
+
+                article.isDel = true;
+
+                try
+                {
+                    db.Entry(article).State = System.Data.Entity.EntityState.Modified;
+                    if (db.SaveChanges() > 0)
+                    {
+                        responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
+                    }
+                    else
+                    {
+                        responseData = ResponseHelper<ArticleTb>.SendErrorResponse("修改失败");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<ArticleTb>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
     }
 
     /// <summary>
@@ -102,6 +144,7 @@ namespace ForumApi.Controllers
     /// </summary>
     public class ArticlePostData
     {
+        public int ArticleId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public int AuthorId { get; set; }
