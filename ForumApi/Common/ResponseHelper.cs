@@ -18,7 +18,7 @@ namespace ForumApi.Common
         {
             ResponseData<T> responseData = new ResponseData<T>()
             {
-                Status = 0,
+                Status = StatusCode.SUCCESS,
                 Msg = "SUCCESS",
                 Data = data,
                 Length = data == null ? 0 : data.Count()
@@ -31,9 +31,10 @@ namespace ForumApi.Common
         /// 操作失败时响应
         /// </summary>
         /// <param name="errorMsg">错误信息</param>
-        /// <param name="data">错误数据</param>
+        /// <param name="statusCode">错误状态</param>
+        /// <param name="data">数据</param>
         /// <returns></returns>
-        public static ResponseData<T> SendErrorResponse(string errorMsg, int statusCode = 1, IEnumerable<T> data = null)
+        public static ResponseData<T> SendErrorResponse(string errorMsg, StatusCode statusCode = StatusCode.SERVER_ERROR, IEnumerable<T> data = null)
         {
             ResponseData<T> responseData = new ResponseData<T>()
             {

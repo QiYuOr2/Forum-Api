@@ -48,7 +48,7 @@ namespace ForumApi.Controllers
             {
                 if (db.RoleTb.Where(u => u.isDel == false && u.account == user.account) != null)
                 {
-                    responseData = ResponseHelper<RoleTb>.SendErrorResponse("账号已存在", 2);
+                    responseData = ResponseHelper<RoleTb>.SendErrorResponse("账号已存在", Models.StatusCode.OPERATION_ERROR);
                 }
                 else
                 {

@@ -20,33 +20,41 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("~/api/article/publish")]
-        public ResponseData<ArticleTb> PublishNewArticle([FromBody] ArticleTb entity)
+        public ResponseData<ArticleTb> PublishNewArticle([FromBody] ArticleTb entity, string guid)
         {
             ResponseData<ArticleTb> responseData;
 
-            ArticleTb article = new ArticleTb()
+            if (SessionHelper.IsExist(guid))
             {
-                title = entity.title,
-                content = entity.content,
-                publishTime = DateTime.Now,
-                authorId = entity.authorId
-            };
 
-            try
-            {
-                db.ArticleTb.Add(article);
-                if (db.SaveChanges() > 0)
+                ArticleTb article = new ArticleTb()
                 {
-                    responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
+                    title = entity.title,
+                    content = entity.content,
+                    publishTime = DateTime.Now,
+                    authorId = entity.authorId
+                };
+
+                try
+                {
+                    db.ArticleTb.Add(article);
+                    if (db.SaveChanges() > 0)
+                    {
+                        responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
+                    }
+                    else
+                    {
+                        responseData = ResponseHelper<ArticleTb>.SendErrorResponse("发布失败");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse("发布失败");
+                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
+                responseData = ResponseHelper<ArticleTb>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
             }
 
             return responseData;

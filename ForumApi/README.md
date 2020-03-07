@@ -14,4 +14,4 @@ POST 接收参数：account, pwd
 
 ### 发布
 
-POST 接收参数：title, content, authorId
+POST 接收参数：title, content, authorId, guid
