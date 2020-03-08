@@ -15,12 +15,12 @@ namespace ForumApi.Controllers
         private readonly ForumEntities db = new ForumEntities();
 
         /// <summary>
-        /// 注册 POST api/register
+        /// 注册 POST api/user/register
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/register")]
+        [Route("~/api/user/register")]
         public ResponseData<RoleTb> UserRegister([FromBody] RoleTb entity)
         {
             ResponseData<RoleTb> responseData;
@@ -60,12 +60,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 登陆 api/login
+        /// 登陆 api/user/login
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/Login")]
+        [Route("~/api/user/Login")]
         public ResponseData<object> UserLogin([FromBody] RoleTb entity)
         {
             ResponseData<object> responseData;
