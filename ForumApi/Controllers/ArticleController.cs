@@ -19,7 +19,7 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/article")]
-        public ResponseData<object> Get()
+        public ResponseData<object> ShowArticles()
         {
             ResponseData<object> responseData;
 
@@ -50,14 +50,15 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 按热度分页查询 GET api/article?pageSize=10&pageIndex=1
+        /// 按条件分页查询 GET api/article?pageSize=10&pageIndex=1&isUseTime=true
         /// </summary>
         /// <param name="pageSize">页面容量</param>
         /// <param name="pageIndex">当前页码</param>
+        /// <param name="isUseTime">是否按时间排序</param>
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/article")]
-        public ResponseData<object> Get(int pageSize, int pageIndex)
+        public ResponseData<object> ShowArticlesOrderByPopularOrPublishTime(int pageSize, int pageIndex, bool isUseTime)
         {
             ResponseData<object> responseData;
 
@@ -67,20 +68,118 @@ namespace ForumApi.Controllers
                                   where a.isDel == false
                                   from u in db.RoleTb
                                   where u.roleId == a.authorId
-                                  select new { a.articleId, a.title, a.content, a.publishTime, a.likeCount, a.viewCount, u.nickName };
+                                  select new
+                                  {
+                                      a.articleId,
+                                      a.title,
+                                      a.content,
+                                      a.publishTime,
+                                      a.likeCount,
+                                      a.viewCount,
+                                      u.nickName
+                                  };
 
                 int totalCount = articleList.Count();
                 int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / pageSize));
 
                 if (articleList != null)
                 {
-                    articleList =
-                        articleList
-                        .OrderBy(a => a.viewCount + a.likeCount)
-                        .OrderBy(a => a.publishTime)
-                        .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    if (isUseTime)
+                    {
+                        // 按时间排序
+                        articleList =
+                            articleList
+                            .OrderByDescending(a => a.publishTime)
+                            .ThenByDescending(a => a.viewCount + a.likeCount)
+                            .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                    else
+                    {
+                        // 按热度排序
+                        articleList =
+                            articleList
+                            .OrderByDescending(a => a.viewCount + a.likeCount)
+                            .ThenByDescending(a => a.publishTime)
+                            .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
 
-                    var res = new List<object>
+                    List<object> res = new List<object>
+                    {
+                        new { articles= articleList, totalCount, totalPages }
+                    };
+
+                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("暂无文章数据");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
+        /// 查找某用户文章 GET api/article?pageSize=10&pageIndex=1&userId=1&isUseTime=true
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="userId"></param>
+        /// <param name="isUseTime"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("~/api/article")]
+        public ResponseData<object> FindArticleByUserId(int pageSize, int pageIndex, int userId, bool isUseTime)
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                var articleList = from a in db.ArticleTb
+                                  where a.isDel == false
+                                  where a.authorId == userId
+                                  from u in db.RoleTb
+                                  where u.roleId == a.authorId
+                                  select new
+                                  {
+                                      a.articleId,
+                                      a.title,
+                                      a.content,
+                                      a.publishTime,
+                                      a.likeCount,
+                                      a.viewCount,
+                                      u.nickName
+                                  };
+
+                int totalCount = articleList.Count();
+                int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / pageSize));
+
+                if (articleList != null)
+                {
+                    if (isUseTime)
+                    {
+                        // 按时间排序
+                        articleList =
+                            articleList
+                            .OrderByDescending(a => a.publishTime)
+                            .ThenByDescending(a => a.viewCount + a.likeCount)
+                            .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+                    else
+                    {
+                        // 按热度排序
+                        articleList =
+                            articleList
+                            .OrderByDescending(a => a.viewCount + a.likeCount)
+                            .ThenByDescending(a => a.publishTime)
+                            .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    }
+
+                    List<object> res = new List<object>
                     {
                         new { articles= articleList, totalCount, totalPages }
                     };
