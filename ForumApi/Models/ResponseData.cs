@@ -30,6 +30,5 @@ namespace ForumApi.Models
         public StatusCode Status { get; set; }
         public string Msg { get; set; }
         public IEnumerable<T> Data { get; set; }
-        public int Length { get; set; }
     }
 }

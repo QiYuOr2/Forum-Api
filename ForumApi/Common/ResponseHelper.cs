@@ -20,8 +20,7 @@ namespace ForumApi.Common
             {
                 Status = StatusCode.SUCCESS,
                 Msg = "SUCCESS",
-                Data = data,
-                Length = data == null ? 0 : data.Count()
+                Data = data
             };
 
             return responseData;
@@ -40,8 +39,7 @@ namespace ForumApi.Common
             {
                 Status = statusCode,
                 Msg = "ERROR: " + errorMsg,
-                Data = data,
-                Length = data == null ? 0 : data.Count()
+                Data = data
             };
 
             return responseData;

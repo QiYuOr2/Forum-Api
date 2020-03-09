@@ -14,42 +14,6 @@ namespace ForumApi.Controllers
         private readonly ForumEntities db = new ForumEntities();
 
         /// <summary>
-        /// 查询所有文章 GET api/article
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("~/api/article")]
-        public ResponseData<object> ShowArticles()
-        {
-            ResponseData<object> responseData;
-
-            try
-            {
-                // 联合查询 { 标题, 内容, 发布时间, 点赞数, 访问量, 作者昵称 }
-                var articleList = from a in db.ArticleTb
-                                  where a.isDel == false
-                                  from u in db.RoleTb
-                                  where u.roleId == a.authorId
-                                  select new { a.articleId, a.title, a.content, a.publishTime, a.likeCount, a.viewCount, u.nickName };
-
-                if (articleList != null)
-                {
-                    responseData = ResponseHelper<object>.SendSuccessResponse(articleList.AsEnumerable<object>());
-                }
-                else
-                {
-                    responseData = ResponseHelper<object>.SendErrorResponse("暂无文章数据");
-                }
-            }
-            catch (Exception ex)
-            {
-                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
-            }
-
-            return responseData;
-        }
-
-        /// <summary>
         /// 按条件分页查询 GET api/article?pageSize=10&pageIndex=1&isUseTime=true
         /// </summary>
         /// <param name="pageSize">页面容量</param>
@@ -103,9 +67,9 @@ namespace ForumApi.Controllers
                             .Skip((pageIndex - 1) * pageSize).Take(pageSize);
                     }
 
-                    List<object> res = new List<object>
+                    List<object> res = new List<object>()
                     {
-                        new { articles= articleList, totalCount, totalPages }
+                        new { articles = articleList, totalCount, totalPages }
                     };
 
                     responseData = ResponseHelper<object>.SendSuccessResponse(res);
@@ -228,11 +192,16 @@ namespace ForumApi.Controllers
                                    a.publishTime,
                                    u.nickName
                                }).First();
+
+                var commentIdList = from c in db.CommentTb
+                                  where article.articleId == c.articleId
+                                  select c.commentId;
+
                 if (article != null)
                 {
                     List<object> res = new List<object>()
                     {
-                        article
+                        new { article, commentIdList }
                     };
                     responseData = ResponseHelper<object>.SendSuccessResponse(res);
                 }
