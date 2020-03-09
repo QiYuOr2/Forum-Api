@@ -12,7 +12,7 @@ namespace ForumApi.Controllers
 {
     public class UserController : ApiController
     {
-        private readonly ForumEntities db = new ForumEntities();
+        private readonly ForumApiEntities db = new ForumApiEntities();
 
         /// <summary>
         /// 注册 POST api/user/register

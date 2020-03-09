@@ -11,7 +11,7 @@ namespace ForumApi.Controllers
 {
     public class ArticleController : ApiController
     {
-        private readonly ForumEntities db = new ForumEntities();
+        private readonly ForumApiEntities db = new ForumApiEntities();
 
         /// <summary>
         /// 按条件分页查询 GET api/article?pageSize=10&pageIndex=1&isUseTime=true

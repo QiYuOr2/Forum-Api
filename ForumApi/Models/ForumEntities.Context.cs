@@ -13,10 +13,10 @@ namespace ForumApi.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ForumEntities : DbContext
+    public partial class ForumApiEntities : DbContext
     {
-        public ForumEntities()
-            : base("name=ForumEntities")
+        public ForumApiEntities()
+            : base("name=ForumApiEntities")
         {
         }
     
@@ -27,7 +27,7 @@ namespace ForumApi.Models
     
         public virtual DbSet<ArticleTb> ArticleTb { get; set; }
         public virtual DbSet<CommentTb> CommentTb { get; set; }
-        public virtual DbSet<RoleTb> RoleTb { get; set; }
         public virtual DbSet<LikeTb> LikeTb { get; set; }
+        public virtual DbSet<RoleTb> RoleTb { get; set; }
     }
 }

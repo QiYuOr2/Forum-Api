@@ -179,3 +179,63 @@ POST 接收参数：title, content, authorId, guid
 ### 删除
 
 POST 接收参数：articleId, guid
+
+
+
+## 评论
+
+### 根据文章ID获取评论
+
+#### 请求URL
+
+```
+https://localhost:44333/api/comment
+```
+
+#### 请求方式
+
+```
+GET
+```
+
+#### 参数表
+
+| 参数      | 是否必选 | 类型 | 说明   |
+| --------- | -------- | ---- | ------ |
+| pagesize  | yes      | int  |        |
+| pageindex | yes      | int  |        |
+| articleId | yes      | int  | 文章ID |
+
+#### 返回示例
+
+```js
+{
+    "Status": 0,
+    "Msg": "SUCCESS",
+    "Data": [
+        {
+            "comments": [
+                {
+                    "commentId": 4,
+                    "publishTime": "2020-03-09T19:06:38.877",
+                    "content": "Hello",
+                    "articleId": 1,
+                    "likeCount": 0,
+                    "nickName": "我是用户3"
+                },
+                {
+                    "commentId": 3,
+                    "publishTime": "2020-03-09T19:06:04.64",
+                    "content": "GKD",
+                    "articleId": 1,
+                    "likeCount": 0,
+                    "nickName": "我是用户2"
+                }
+            ],
+            "totalCount": 4,
+            "totalPages": 2
+        }
+    ]
+}
+```
+

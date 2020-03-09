@@ -136,53 +136,54 @@
     <Compile Include="Common\ResponseHelper.cs" />
     <Compile Include="Common\SessionHelper.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ArticleTb.cs">
-      <DependentUpon>ForumModel.tt</DependentUpon>
+      <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CommentTb.cs">
-      <DependentUpon>ForumModel.tt</DependentUpon>
+      <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ForumModel.Context.cs">
+    <Compile Include="Models\ForumEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ForumModel.Context.tt</DependentUpon>
+      <DependentUpon>ForumEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ForumModel.cs">
+    <Compile Include="Models\ForumEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ForumModel.tt</DependentUpon>
+      <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ForumModel.Designer.cs">
+    <Compile Include="Models\ForumEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ForumModel.edmx</DependentUpon>
+      <DependentUpon>ForumEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\LikeTb.cs">
-      <DependentUpon>ForumModel.tt</DependentUpon>
+      <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ResponseData.cs" />
     <Compile Include="Models\RoleTb.cs">
-      <DependentUpon>ForumModel.tt</DependentUpon>
+      <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Models\ForumModel.Context.tt">
+    <Content Include="Models\ForumEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ForumModel.Context.cs</LastGenOutput>
-      <DependentUpon>ForumModel.edmx</DependentUpon>
+      <DependentUpon>ForumEntities.edmx</DependentUpon>
+      <LastGenOutput>ForumEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\ForumModel.tt">
+    <Content Include="Models\ForumEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ForumModel.edmx</DependentUpon>
-      <LastGenOutput>ForumModel.cs</LastGenOutput>
+      <DependentUpon>ForumEntities.edmx</DependentUpon>
+      <LastGenOutput>ForumEntities.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -196,12 +197,12 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Models\ForumModel.edmx">
+    <EntityDeploy Include="Models\ForumEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ForumModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>ForumEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\ForumModel.edmx.diagram">
-      <DependentUpon>ForumModel.edmx</DependentUpon>
+    <Content Include="Models\ForumEntities.edmx.diagram">
+      <DependentUpon>ForumEntities.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <Content Include="README.md" />
