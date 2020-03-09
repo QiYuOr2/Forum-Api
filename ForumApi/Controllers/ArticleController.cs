@@ -131,7 +131,7 @@ namespace ForumApi.Controllers
         /// <param name="userId"></param>
         /// <param name="isUseTime"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         [Route("~/api/article")]
         public ResponseData<object> FindArticleByUserId(int pageSize, int pageIndex, int userId, bool isUseTime)
         {
