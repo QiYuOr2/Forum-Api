@@ -201,6 +201,55 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
+        /// 展示某篇文章 GET api/article?articleId=1
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("~/api/article")]
+        public ResponseData<object> ShowArticleById(int articleId)
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                var article = (from a in db.ArticleTb
+                              where a.isDel == false
+                              where a.articleId == articleId
+                              from u in db.RoleTb
+                              where u.roleId == a.authorId
+                              select new
+                              {
+                                  a.articleId,
+                                  a.title,
+                                  a.content,
+                                  a.likeCount,
+                                  a.viewCount,
+                                  a.publishTime,
+                                  u.nickName
+                              }).First();
+                if (article != null)
+                {
+                    List<object> res = new List<object>()
+                    {
+                        article
+                    };
+                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("暂无文章数据");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
         /// 发布文章 POST api/article/publish
         /// </summary>
         /// <param name="entity"></param>
