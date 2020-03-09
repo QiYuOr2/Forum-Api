@@ -58,7 +58,7 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/article")]
-        public ResponseData<object> ShowArticlesOrderByPopularOrPublishTime(int pageSize, int pageIndex, bool isUseTime)
+        public ResponseData<object> ShowArticlesOrderByPopularOrPublishTime(int pageSize, int pageIndex, bool isUseTime = false)
         {
             ResponseData<object> responseData;
 
@@ -133,7 +133,7 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("~/api/article")]
-        public ResponseData<object> FindArticleByUserId(int pageSize, int pageIndex, int userId, bool isUseTime)
+        public ResponseData<object> FindArticleByUserId(int pageSize, int pageIndex, int userId, bool isUseTime = false)
         {
             ResponseData<object> responseData;
 
@@ -214,20 +214,20 @@ namespace ForumApi.Controllers
             try
             {
                 var article = (from a in db.ArticleTb
-                              where a.isDel == false
-                              where a.articleId == articleId
-                              from u in db.RoleTb
-                              where u.roleId == a.authorId
-                              select new
-                              {
-                                  a.articleId,
-                                  a.title,
-                                  a.content,
-                                  a.likeCount,
-                                  a.viewCount,
-                                  a.publishTime,
-                                  u.nickName
-                              }).First();
+                               where a.isDel == false
+                               where a.articleId == articleId
+                               from u in db.RoleTb
+                               where u.roleId == a.authorId
+                               select new
+                               {
+                                   a.articleId,
+                                   a.title,
+                                   a.content,
+                                   a.likeCount,
+                                   a.viewCount,
+                                   a.publishTime,
+                                   u.nickName
+                               }).First();
                 if (article != null)
                 {
                     List<object> res = new List<object>()
