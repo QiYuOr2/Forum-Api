@@ -306,56 +306,6 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
-
-        /// <summary>
-        /// 点赞 POST api/article/like 未测试*
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [Route("~/api/article/like")]
-        public ResponseData<ArticleTb> AddLikeCount([FromBody] ArticlePostData postData)
-        {
-            ResponseData<ArticleTb> responseData;
-
-            if (SessionHelper.IsExist(postData.Guid))
-            {
-                ArticleTb article = db.ArticleTb.Where(a => a.articleId == postData.ArticleId).FirstOrDefault();
-
-                article.likeCount++;
-
-                // 添加到点赞列表
-                LikeTb likeItem = new LikeTb()
-                {
-                    userId = postData.UserId,
-                    articleId = postData.ArticleId
-                };
-                db.LikeTb.Add(likeItem);
-
-                try
-                {
-                    db.Entry(article).State = System.Data.Entity.EntityState.Modified;
-                    if (db.SaveChanges() > 0)
-                    {
-                        responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
-                    }
-                    else
-                    {
-                        responseData = ResponseHelper<ArticleTb>.SendErrorResponse("修改失败");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
-                }
-            }
-            else
-            {
-                responseData = ResponseHelper<ArticleTb>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
-            }
-
-            return responseData;
-        }
     }
 
     /// <summary>

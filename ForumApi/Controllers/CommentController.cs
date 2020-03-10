@@ -13,7 +13,13 @@ namespace ForumApi.Controllers
     {
         private readonly ForumApiEntities db = new ForumApiEntities();
 
-
+        /// <summary>
+        /// 获得某文章评论 GET api/comment?pagesize=2&pageindex=1&articleId=1
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="articleId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("~/api/comment")]
         public ResponseData<object> GetComments(int pageSize, int pageIndex, int articleId)

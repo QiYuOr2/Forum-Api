@@ -18,7 +18,7 @@ POST 接收参数：account, pwd
 #### 请求URL
 
 ```
-https://localhost:44333/api/article
+http://www.barteam.cn:7705/api/article
 ```
 
 #### 请求方式
@@ -75,7 +75,7 @@ GET
 #### 请求URL
 
 ```
-https://localhost:44333/api/article
+http://www.barteam.cn:7705/api/article
 ```
 
 #### 请求方式
@@ -132,7 +132,7 @@ GET
 
 #### 请求URL
 ```
-https://localhost:44333/api/article
+http://www.barteam.cn:7705/api/article
 ```
 
 #### 请求方式
@@ -189,7 +189,7 @@ POST 接收参数：articleId, guid
 #### 请求URL
 
 ```
-https://localhost:44333/api/comment
+http://www.barteam.cn:7705/api/comment
 ```
 
 #### 请求方式
