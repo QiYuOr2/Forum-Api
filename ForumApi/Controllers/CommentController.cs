@@ -70,5 +70,110 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+
+        /// <summary>
+        /// 添加评论 POST api/comment/add 未测试*
+        /// </summary>
+        /// <param name="commentData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("~/api/comment/add")]
+        public ResponseData<object> AddComment([FromBody] CommentPostData commentData)
+        {
+            ResponseData<object> responseData;
+            if (SessionHelper.IsExist(commentData.Guid))
+            {
+                CommentTb comment = new CommentTb()
+                {
+                    articleId = commentData.ArticleId,
+                    authorId = commentData.AuthorId,
+                    publishTime = DateTime.Now,
+                    content = commentData.Content,
+                };
+
+                try
+                {
+                    db.CommentTb.Add(comment);
+                    if (db.SaveChanges() > 0)
+                    {
+                        responseData = ResponseHelper<object>.SendSuccessResponse();
+                    }
+                    else
+                    {
+                        responseData = ResponseHelper<object>.SendErrorResponse("评论失败");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
+        /// 删除评论 POST api/comment/delete 未测试*
+        /// </summary>
+        /// <param name="commentData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("~/api/comment/delete")]
+        public ResponseData<object> DeleteComments([FromBody] CommentPostData commentData)
+        {
+            ResponseData<object> responseData;
+
+            if (SessionHelper.IsExist(commentData.Guid))
+            {
+                CommentTb comment = 
+                    db.CommentTb
+                    .Where(c => c.isDel == false && c.commentId == commentData.CommentId && c.authorId == commentData.AuthorId)
+                    .First();
+
+                if (comment != null)
+                {
+                    comment.isDel = true;
+                    try
+                    {
+                        db.Entry(comment).State = System.Data.Entity.EntityState.Modified;
+                        if (db.SaveChanges() > 0)
+                        {
+                            responseData = ResponseHelper<object>.SendSuccessResponse();
+                        }
+                        else
+                        {
+                            responseData = ResponseHelper<object>.SendErrorResponse("删除评论失败");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+                    }
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("无此评论数据");
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
+    }
+
+    public class CommentPostData
+    {
+        public string Guid { get; set; }
+        public int CommentId { get; set; }
+        public int ArticleId { get; set; }
+        public int AuthorId { get; set; }
+        public string Content { get; set; }
     }
 }
