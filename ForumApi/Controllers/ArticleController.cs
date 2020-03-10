@@ -306,6 +306,57 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+
+        /// <summary>
+        /// 更新文章 POST api/article/update 未测试*
+        /// </summary>
+        /// <param name="postData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("~/api/article/update")]
+        public ResponseData<ArticleTb> UpdateAritcle([FromBody] ArticlePostData postData)
+        {
+            ResponseData<ArticleTb> responseData;
+
+            if (SessionHelper.IsExist(postData.Guid))
+            {
+                ArticleTb article = 
+                    db.ArticleTb
+                    .Where(a => a.isDel == false && a.articleId == postData.ArticleId)
+                    .First();
+
+                if(article != null)
+                {
+                    article.content = postData.Content;
+                    try
+                    {
+                        db.Entry(article).State = System.Data.Entity.EntityState.Modified;
+                        if (db.SaveChanges() > 0)
+                        {
+                            responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
+                        }
+                        else
+                        {
+                            responseData = ResponseHelper<ArticleTb>.SendErrorResponse("修改失败");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
+                    }
+                }
+                else
+                {
+                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse("无此文章数据");
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<ArticleTb>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
     }
 
     /// <summary>
