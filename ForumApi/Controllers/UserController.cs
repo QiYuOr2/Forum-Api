@@ -214,6 +214,107 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+
+        /// <summary>
+        /// 获取某人权限等级 GET api/user/getpower/{userId}
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("getPower/{userId}")]
+        public ResponseData<object> GetUserPower(int userId)
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                var powerNum = from u in db.RoleTb
+                           where u.roleId == userId
+                           select u.powerNum;
+
+                if (powerNum != null)
+                {
+                    List<object> res = new List<object>()
+                    {
+                        powerNum
+                    };
+                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("未找到此用户");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
+        /// 管理员修改用户权限 POST api/user/power/{userId}
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="userPostData"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("power/{userId}")]
+        public ResponseData<object> ChangeUserPower(int userId, [FromBody] UserPostData userPostData)
+        {
+            ResponseData<object> responseData;
+
+            if (SessionHelper.IsExist(userPostData.Guid))
+            {
+                string adminAccount = HttpContext.Current.Session[userPostData.Guid].ToString();
+
+                RoleTb admin = db.RoleTb.Where(u => u.isDel == false && u.account == adminAccount).FirstOrDefault();
+
+                //判断是否为管理员
+                if (admin != null && admin.powerNum == 99)
+                {
+                    RoleTb user = db.RoleTb.Where(u => u.isDel == false && u.roleId == userId).FirstOrDefault();
+
+                    // 判断要操作的用户是否存在
+                    if (user != null)
+                    {
+                        user.powerNum = userPostData.PowerNum;
+                        try
+                        {
+                            db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                            if (db.SaveChanges() > 0)
+                            {
+                                responseData = ResponseHelper<object>.SendSuccessResponse();
+                            }
+                            else
+                            {
+                                responseData = ResponseHelper<object>.SendErrorResponse("修改失败");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+                        }
+                    }
+                    else
+                    {
+                        responseData = ResponseHelper<object>.SendErrorResponse("未找到该用户");
+                    }
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("用户登陆失效或权限不足", Models.StatusCode.OPERATION_ERROR);
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
     }
 
     public class UserPostData
