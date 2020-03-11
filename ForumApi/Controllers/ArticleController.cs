@@ -9,6 +9,7 @@ using ForumApi.Models;
 
 namespace ForumApi.Controllers
 {
+    [RoutePrefix("api/article")]
     public class ArticleController : ApiController
     {
         private readonly ForumApiEntities db = new ForumApiEntities();
@@ -21,7 +22,6 @@ namespace ForumApi.Controllers
         /// <param name="isUseTime">是否按时间排序</param>
         /// <returns></returns>
         [HttpGet]
-        [Route("~/api/article")]
         public ResponseData<object> ShowArticlesOrderByPopularOrPublishTime(int pageSize, int pageIndex, bool isUseTime = false)
         {
             ResponseData<object> responseData;
@@ -96,7 +96,6 @@ namespace ForumApi.Controllers
         /// <param name="isUseTime"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("~/api/article")]
         public ResponseData<object> FindArticleByUserId(int pageSize, int pageIndex, int userId, bool isUseTime = false)
         {
             ResponseData<object> responseData;
@@ -170,7 +169,6 @@ namespace ForumApi.Controllers
         /// <param name="articleId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("~/api/article")]
         public ResponseData<object> ShowArticleById(int articleId)
         {
             ResponseData<object> responseData;
@@ -224,7 +222,7 @@ namespace ForumApi.Controllers
         /// <param name="entity"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/article/publish")]
+        [Route("publish")]
         public ResponseData<ArticleTb> PublishNewArticle([FromBody] ArticlePostData postData)
         {
             ResponseData<ArticleTb> responseData;
@@ -266,12 +264,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 删除文章 POST api/article/delete 未测试*
+        /// 删除文章 POST api/article/delete
         /// </summary>
         /// <param name="postData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/article/delete")]
+        [Route("delete")]
         public ResponseData<ArticleTb> DeleteArticle([FromBody] ArticlePostData postData)
         {
             ResponseData<ArticleTb> responseData;
@@ -308,12 +306,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 更新文章 POST api/article/update 未测试*
+        /// 更新文章 POST api/article/update
         /// </summary>
         /// <param name="postData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/article/update")]
+        [Route("update")]
         public ResponseData<ArticleTb> UpdateAritcle([FromBody] ArticlePostData postData)
         {
             ResponseData<ArticleTb> responseData;

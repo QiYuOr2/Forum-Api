@@ -9,6 +9,7 @@ using ForumApi.Models;
 
 namespace ForumApi.Controllers
 {
+    [RoutePrefix("api/comment")]
     public class CommentController : ApiController
     {
         private readonly ForumApiEntities db = new ForumApiEntities();
@@ -21,7 +22,6 @@ namespace ForumApi.Controllers
         /// <param name="articleId"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("~/api/comment")]
         public ResponseData<object> GetComments(int pageSize, int pageIndex, int articleId)
         {
             ResponseData<object> responseData;
@@ -39,7 +39,8 @@ namespace ForumApi.Controllers
                                       c.content,
                                       c.articleId,
                                       c.likeCount,
-                                      a.nickName
+                                      a.nickName,
+                                      a.avatarUrl
                                   };
 
 
@@ -72,12 +73,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 添加评论 POST api/comment/add 未测试*
+        /// 添加评论 POST api/comment/add
         /// </summary>
         /// <param name="commentData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/comment/add")]
+        [Route("add")]
         public ResponseData<object> AddComment([FromBody] CommentPostData commentData)
         {
             ResponseData<object> responseData;
@@ -117,12 +118,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 删除评论 POST api/comment/delete 未测试*
+        /// 删除评论 POST api/comment/delete
         /// </summary>
         /// <param name="commentData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/comment/delete")]
+        [Route("delete")]
         public ResponseData<object> DeleteComments([FromBody] CommentPostData commentData)
         {
             ResponseData<object> responseData;

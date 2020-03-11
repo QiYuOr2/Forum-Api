@@ -9,17 +9,18 @@ using System.Web.Http;
 
 namespace ForumApi.Controllers
 {
+    [RoutePrefix("api/like")]
     public class LikeController : ApiController
     {
         private readonly ForumApiEntities db = new ForumApiEntities();
 
         /// <summary>
-        /// 点赞 POST api/like/add 未测试*
+        /// 点赞 POST api/like/add
         /// </summary>
         /// <param name="postData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/like/add")]
+        [Route("add")]
         public ResponseData<object> AddLikeCount([FromBody] LikePostData postData)
         {
             ResponseData<object> responseData;
@@ -32,7 +33,10 @@ namespace ForumApi.Controllers
                 article.likeCount++;
 
                 // 查询记录是否存在
-                var oldLikeItem = db.LikeTb.Where(l => l.articleId == postData.ArticleId && l.userId == postData.UserId);
+                LikeTb oldLikeItem =
+                    db.LikeTb
+                    .Where(l => l.articleId == postData.ArticleId && l.userId == postData.UserId)
+                    .FirstOrDefault();
                 if (oldLikeItem == null)
                 {
                     // 添加到点赞列表
@@ -74,12 +78,12 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 取消点赞 POST api/like/delete 未测试*
+        /// 取消点赞 POST api/like/delete
         /// </summary>
         /// <param name="postData"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("~/api/like/delete")]
+        [Route("delete")]
         public ResponseData<object> DeleteLikeCount([FromBody] LikePostData postData)
         {
             ResponseData<object> responseData;
@@ -91,21 +95,31 @@ namespace ForumApi.Controllers
 
                 article.likeCount--;
 
-                // 获取点赞列表
-                LikeTb likeItem = db.LikeTb.Where(l => l.articleId == postData.ArticleId && l.userId == postData.UserId).First();
 
                 try
                 {
-                    db.LikeTb.Remove(likeItem);
-                    db.Entry(article).State = System.Data.Entity.EntityState.Modified;
+                    // 获取点赞列表
+                    LikeTb likeItem =
+                        db.LikeTb
+                        .Where(l => l.articleId == postData.ArticleId && l.userId == postData.UserId)
+                        .FirstOrDefault();
 
-                    if (db.SaveChanges() > 0)
+                    if (likeItem != null)
                     {
-                        responseData = ResponseHelper<object>.SendSuccessResponse(new List<object> { article.likeCount });
+                        db.LikeTb.Remove(likeItem);
+
+                        if (db.SaveChanges() > 0)
+                        {
+                            responseData = ResponseHelper<object>.SendSuccessResponse(new List<object> { article.likeCount });
+                        }
+                        else
+                        {
+                            responseData = ResponseHelper<object>.SendErrorResponse("取消点赞失败");
+                        }
                     }
                     else
                     {
-                        responseData = ResponseHelper<object>.SendErrorResponse("取消点赞失败");
+                        responseData = ResponseHelper<object>.SendErrorResponse("未点赞，不能取消", Models.StatusCode.OPERATION_ERROR);
                     }
                 }
                 catch (Exception ex)
