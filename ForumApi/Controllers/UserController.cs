@@ -164,7 +164,7 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 修改用户昵称/密码 POST api/user/update/{userId}
+        /// 修改用户昵称/密码/头像 POST api/user/update/{userId}
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="userPostData"></param>
@@ -183,6 +183,7 @@ namespace ForumApi.Controllers
                 {
                     user.nickName = userPostData.NickName ?? user.nickName;
                     user.pwd = userPostData.Pwd ?? user.pwd;
+                    user.avatarUrl = userPostData.AvatarUrl ?? user.avatarUrl;
 
                     try
                     {
@@ -315,6 +316,8 @@ namespace ForumApi.Controllers
 
             return responseData;
         }
+
+        // TODO: 上传头像
     }
 
     public class UserPostData
