@@ -53,11 +53,11 @@ namespace ForumApi.Common
         /// <param name="account">账号</param>
         /// <param name="msg">信息</param>
         /// <returns></returns>
-        public static IEnumerable<object> SetLoginMsg(string status, string guid, string account, string msg = null)
+        public static IEnumerable<object> SetLoginMsg(string guid, string account, string msg = null)
         {
             var res = new List<object>
             {
-                new { Status = status, Guid = guid, Account = account, Msg = msg }
+                new { Guid = guid, Account = account, Msg = msg }
             };
 
             return res;

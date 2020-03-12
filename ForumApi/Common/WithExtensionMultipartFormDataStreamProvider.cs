@@ -7,6 +7,9 @@ using System.Web;
 
 namespace ForumApi.Common
 {
+    /// <summary>
+    /// 处理图片名
+    /// </summary>
     public class WithExtensionMultipartFormDataStreamProvider : MultipartFormDataStreamProvider
     {
         public Guid Guid { get; set; }

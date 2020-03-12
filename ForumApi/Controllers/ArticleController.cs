@@ -312,9 +312,9 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("update")]
-        public ResponseData<ArticleTb> UpdateAritcle([FromBody] ArticlePostData postData)
+        public ResponseData<object> UpdateAritcle([FromBody] ArticlePostData postData)
         {
-            ResponseData<ArticleTb> responseData;
+            ResponseData<object> responseData;
 
             if (SessionHelper.IsExist(postData.Guid))
             {
@@ -325,32 +325,41 @@ namespace ForumApi.Controllers
 
                 if(article != null)
                 {
-                    article.content = postData.Content;
+                    article.title = postData.Title ?? article.title;
+                    article.content = postData.Content ?? article.content;
                     try
                     {
                         db.Entry(article).State = System.Data.Entity.EntityState.Modified;
                         if (db.SaveChanges() > 0)
                         {
-                            responseData = ResponseHelper<ArticleTb>.SendSuccessResponse();
+                            List<object> res = new List<object>()
+                            { 
+                                new 
+                                {
+                                    article.title,
+                                    article.content
+                                }
+                            };
+                            responseData = ResponseHelper<object>.SendSuccessResponse(res);
                         }
                         else
                         {
-                            responseData = ResponseHelper<ArticleTb>.SendErrorResponse("修改失败");
+                            responseData = ResponseHelper<object>.SendErrorResponse("修改失败");
                         }
                     }
                     catch (Exception ex)
                     {
-                        responseData = ResponseHelper<ArticleTb>.SendErrorResponse(ex.Message);
+                        responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
                     }
                 }
                 else
                 {
-                    responseData = ResponseHelper<ArticleTb>.SendErrorResponse("无此文章数据");
+                    responseData = ResponseHelper<object>.SendErrorResponse("无此文章数据");
                 }
             }
             else
             {
-                responseData = ResponseHelper<ArticleTb>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+                responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
             }
 
             return responseData;

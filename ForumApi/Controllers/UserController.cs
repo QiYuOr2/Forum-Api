@@ -91,7 +91,7 @@ namespace ForumApi.Controllers
                 {
                     string guid = Guid.NewGuid().ToString();
 
-                    var loginUserMsg = ResponseHelper<object>.SetLoginMsg("SUCCESS", guid, loginUser.account);
+                    var loginUserMsg = ResponseHelper<object>.SetLoginMsg(guid, loginUser.account);
 
                     HttpContext.Current.Session[guid] = loginUser.account;
                     HttpContext.Current.Session.Timeout = 30;
@@ -149,8 +149,9 @@ namespace ForumApi.Controllers
                 {
                     List<object> res = new List<object>()
                     {
-                        user, likeList
+                        new { user, likeList }
                     };
+
                     responseData = ResponseHelper<object>.SendSuccessResponse(res);
                 }
                 else
@@ -225,9 +226,9 @@ namespace ForumApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("getPower/{userId}")]
-        public ResponseData<object> GetUserPower(int userId)
+        public ResponseData<int> GetUserPower(int userId)
         {
-            ResponseData<object> responseData;
+            ResponseData<int> responseData;
 
             try
             {
@@ -237,20 +238,17 @@ namespace ForumApi.Controllers
 
                 if (powerNum != null)
                 {
-                    List<object> res = new List<object>()
-                    {
-                        powerNum
-                    };
-                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                    
+                    responseData = ResponseHelper<int>.SendSuccessResponse(powerNum.AsEnumerable());
                 }
                 else
                 {
-                    responseData = ResponseHelper<object>.SendErrorResponse("未找到此用户");
+                    responseData = ResponseHelper<int>.SendErrorResponse("未找到此用户");
                 }
             }
             catch (Exception ex)
             {
-                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+                responseData = ResponseHelper<int>.SendErrorResponse(ex.Message);
             }
 
             return responseData;
@@ -359,7 +357,7 @@ namespace ForumApi.Controllers
 
                         foreach (var file in provider.FileData)
                         {
-                            string fileName = Path.GetFileName(file.LocalFileName);
+                            string fileName = file.LocalFileName;
                             files.Add(fileName);
 
                             user.avatarUrl = fileName;
