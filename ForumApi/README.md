@@ -20,7 +20,7 @@
 
 **请求URL:**
 
-- `http://www.barteam.cn:7705/api/user/register`
+- `api/user/register`
 
 **请求方式:**
 
@@ -47,7 +47,7 @@
 ### 登陆 
 
 **请求URL：** 
-- `http://www.barteam.cn:7705/api/user/login `
+- `api/user/login `
 
 **请求方式：**
 - POST 
@@ -85,7 +85,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/user/show/{userId}`
+- `api/user/show/{userId}`
 
 **请求方式：**
 - GET
@@ -134,7 +134,7 @@
 ### 修改昵称/密码
 
 **请求URL：** 
-- `http://www.barteam.cn:7705/api/user/update/{userId} `
+- `api/user/update/{userId} `
 
 **请求方式：**
 - POST 
@@ -161,7 +161,7 @@
 ### 管理员修改用户权限
 
 **请求URL：** 
-- `http://www.barteam.cn:7705/api/user/power/{userId} `
+- `api/user/power/{userId} `
 
 **请求方式：**
 - POST 
@@ -187,7 +187,7 @@
 ### 获取某用户权限等级
 
 **请求URL：** 
-- `http://www.barteam.cn:7705/api/user/getpower/{userId} `
+- `api/user/getpower/{userId} `
 
 **请求方式：**
 - GET 
@@ -210,14 +210,14 @@
 }
 ```
 
- ### 上传头像*
+ ### 上传头像
 
 **简述：**
 
 - `form-data`上传图片
 
 **请求URL：** 
-- `http://www.barteam.cn:7705/api/user/upload `
+- `api/user/upload `
 
 **请求方式：**
 - POST 
@@ -236,7 +236,7 @@
     "Status": 0,
     "Msg": "SUCCESS",
     "Data": [
-        "5f95f28f-7548-4ed3-9716-a5b59aefb3c4.png"
+        "avatars\\5f95f28f-7548-4ed3-9716-a5b59aefb3c4.png"
     ]
 }
 ```
@@ -253,7 +253,7 @@
 ### 按条件分页查询文章
 **请求URL：**
 
-- `http://www.barteam.cn:7705/api/article?pageSize=3&pageIndex=1&isUseTime=true`
+- `api/article?pageSize=3&pageIndex=1&isUseTime=true`
 
 **请求方式**
 
@@ -315,7 +315,7 @@
 
 **请求URL:**
 
-- `http://www.barteam.cn:7705/api/article?pageSize=2&pageIndex=1&isUseTime=true&userId=1`
+- `api/article?pageSize=2&pageIndex=1&isUseTime=true&userId=1`
 
 **请求方式:**
 
@@ -378,7 +378,7 @@
 
 **请求URL：**
 
-- `http://www.barteam.cn:7705/api/article?articleId=1`
+- `api/article?articleId=1`
 
 **请求方式：**
 
@@ -419,7 +419,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/article/publish`
+- `api/article/publish`
 
 **请求方式：**
 
@@ -448,7 +448,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/article/delete`
+- `api/article/delete`
 
 **请求方式：**
 
@@ -475,7 +475,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/article/update`
+- `api/article/update`
 
 **请求方式：**
 
@@ -515,7 +515,7 @@
 
 **请求URL：**
 
-- `http://www.barteam.cn:7705/api/comment?pagesize=2&pageindex=1&articleId=1`
+- `api/comment?pagesize=2&pageindex=1&articleId=1`
 
 **请求方式**
 
@@ -574,7 +574,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/comment/add`
+- `api/comment/add`
 
 **请求方式：**
 
@@ -603,7 +603,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/comment/delete`
+- `api/comment/delete`
 
 **请求方式：**
 
@@ -633,7 +633,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/like/add`
+- `api/like/add`
 
 **请求方式：**
 
@@ -669,7 +669,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/like/delete`
+- `api/like/delete`
 
 **请求方式：**
 
@@ -707,7 +707,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/search?pagesize=3&pageindex=1&keyword=测试`
+- `api/search?pagesize=3&pageindex=1&keyword=测试`
 
 **请求方式：**
 
@@ -779,7 +779,7 @@
 
 **请求URL：** 
 
-- `http://www.barteam.cn:7705/api/search/user?pagesize=3&pageindex=1&keyword=用户`
+- `api/search/user?pagesize=3&pageindex=1&keyword=用户`
 
 **请求方式：**
 

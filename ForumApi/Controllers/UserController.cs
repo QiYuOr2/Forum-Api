@@ -357,7 +357,7 @@ namespace ForumApi.Controllers
 
                         foreach (var file in provider.FileData)
                         {
-                            string fileName = file.LocalFileName;
+                            string fileName = Path.Combine("avatars", Path.GetFileName(file.LocalFileName));
                             files.Add(fileName);
 
                             user.avatarUrl = fileName;
