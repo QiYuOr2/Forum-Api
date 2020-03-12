@@ -136,6 +136,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\ResponseHelper.cs" />
     <Compile Include="Common\SessionHelper.cs" />
+    <Compile Include="Common\WithExtensionMultipartFormDataStreamProvider.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\LikeController.cs" />

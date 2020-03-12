@@ -7,6 +7,9 @@ using System.Web.Http;
 using ForumApi.Models;
 using ForumApi.Common;
 using System.Web;
+using System.Web.Hosting;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ForumApi.Controllers
 {
@@ -164,7 +167,7 @@ namespace ForumApi.Controllers
         }
 
         /// <summary>
-        /// 修改用户昵称/密码/头像 POST api/user/update/{userId}
+        /// 修改用户昵称/密码 POST api/user/update/{userId}
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="userPostData"></param>
@@ -183,7 +186,6 @@ namespace ForumApi.Controllers
                 {
                     user.nickName = userPostData.NickName ?? user.nickName;
                     user.pwd = userPostData.Pwd ?? user.pwd;
-                    user.avatarUrl = userPostData.AvatarUrl ?? user.avatarUrl;
 
                     try
                     {
@@ -230,8 +232,8 @@ namespace ForumApi.Controllers
             try
             {
                 var powerNum = from u in db.RoleTb
-                           where u.roleId == userId
-                           select u.powerNum;
+                               where u.roleId == userId
+                               select u.powerNum;
 
                 if (powerNum != null)
                 {
@@ -317,7 +319,78 @@ namespace ForumApi.Controllers
             return responseData;
         }
 
-        // TODO: 上传头像
+        /// <summary>
+        /// 上传头像 POST api/user/upload
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("upload")]
+        public async Task<ResponseData<object>> UploadAvatar()
+        {
+            ResponseData<object> responseData;
+
+            string userGuid = HttpContext.Current.Request.Form["guid"];
+
+            if (SessionHelper.IsExist(userGuid))
+            {
+                string adminAccount = HttpContext.Current.Session[userGuid].ToString();
+
+                RoleTb user = db.RoleTb.Where(u => u.account == adminAccount).FirstOrDefault();
+
+                if (user != null)
+                {
+                    string uploadFolderPath = HostingEnvironment.MapPath("~/avatars");
+
+                    if (!Directory.Exists(uploadFolderPath))
+                    {
+                        Directory.CreateDirectory(uploadFolderPath);
+                    }
+
+                    Guid imgGuid = Guid.NewGuid();
+
+                    List<string> files = new List<string>();
+                    var provider = new WithExtensionMultipartFormDataStreamProvider(uploadFolderPath, imgGuid);
+                    try
+                    {
+                        // Read the form data.
+                        await Request.Content.ReadAsMultipartAsync(provider);
+
+                        // This illustrates how to get the file names.
+
+                        foreach (var file in provider.FileData)
+                        {
+                            string fileName = Path.GetFileName(file.LocalFileName);
+                            files.Add(fileName);
+
+                            user.avatarUrl = fileName;
+                            db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        }
+                        if (db.SaveChanges() > 0)
+                        {
+                            responseData = ResponseHelper<object>.SendSuccessResponse(files);
+                        }
+                        else
+                        {
+                            responseData = ResponseHelper<object>.SendErrorResponse("头像上传失败");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+                    }
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("登陆失效", Models.StatusCode.OPERATION_ERROR);
+                }
+            }
+            else
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
     }
 
     public class UserPostData

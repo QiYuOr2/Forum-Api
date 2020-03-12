@@ -15,7 +15,7 @@ namespace ForumApi.Controllers
         private readonly ForumApiEntities db = new ForumApiEntities();
 
         /// <summary>
-        /// 关键词查找 GET api/search?pagesize=2&pageindex=1&keyword=
+        /// 关键词查找文章 GET api/search?pagesize=2&pageindex=1&keyword=
         /// </summary>
         /// <param name="keyword"></param>
         /// <param name="pageSize"></param>
@@ -29,6 +29,7 @@ namespace ForumApi.Controllers
             try
             {
                 var articleList = from a in db.ArticleTb
+                                  where a.isDel == false
                                   where a.title.Contains(keyword)
                                   from u in db.RoleTb
                                   where u.roleId == a.authorId
@@ -59,6 +60,62 @@ namespace ForumApi.Controllers
                     List<object> res = new List<object>()
                 {
                     new { articles = articleList, totalCount, totalPages }
+                };
+
+                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("没找到");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
+        /// 关键词查找用户 GET api/search/user?pagesize=2&pageindex=1&keyword=
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("user")]
+        public ResponseData<object> SearchUserByKeyword(string keyword, int pageSize, int pageIndex)
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                var userList = from u in db.RoleTb
+                               where u.isDel == false
+                               where u.nickName.Contains(keyword)
+                               select new
+                               {
+                                   u.roleId,
+                                   u.nickName,
+                                   u.avatarUrl
+                               };
+
+                int totalCount = userList.Count();
+                int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / pageSize));
+
+                if (userList != null)
+                {
+                    // 按热度排序
+                    userList = 
+                        userList
+                        .OrderBy(u => u.roleId)
+                        .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+                    List<object> res = new List<object>()
+                {
+                    new { users = userList, totalCount, totalPages }
                 };
 
                     responseData = ResponseHelper<object>.SendSuccessResponse(res);
