@@ -14,6 +14,75 @@
 
 ## 用户
 
+### 分页查询所有用户
+
+**请求URL：** 
+
+- `api/user?pagesize=4&pageindex=1`
+
+**请求方式：**
+
+- GET
+
+**参数：** 
+
+| 参数名    | 必选 | 类型 | 说明     |
+| :-------- | :--- | :--- | -------- |
+| pagesize  | yes  | int  | 页面容量 |
+| pageindex | yes  | int  | 当前页面 |
+
+ **返回示例**
+
+``` json
+{
+    "Status": 0,
+    "Msg": "SUCCESS",
+    "Data": [
+        {
+            "userList": [
+                {
+                    "roleId": 1,
+                    "account": "admin",
+                    "avatarUrl": "avatars\\4f56e38d-1734-4f27-8e95-d542dedddfc8.jpg",
+                    "powerNum": 99,
+                    "nickName": "昵称001"
+                },
+                {
+                    "roleId": 2,
+                    "account": "User1",
+                    "avatarUrl": "avatars\\4f56e38d-1734-4f27-8e95-d542dedddfc8.jpg",
+                    "powerNum": 1,
+                    "nickName": "我是用户1"
+                },
+                {
+                    "roleId": 3,
+                    "account": "User2",
+                    "avatarUrl": "avatars\\4f56e38d-1734-4f27-8e95-d542dedddfc8.jpg",
+                    "powerNum": 0,
+                    "nickName": "我是用户2"
+                },
+                {
+                    "roleId": 4,
+                    "account": "User3",
+                    "avatarUrl": "avatars\\4f56e38d-1734-4f27-8e95-d542dedddfc8.jpg",
+                    "powerNum": 0,
+                    "nickName": "我是用户3"
+                }
+            ],
+            "totalCount": 12,
+            "totalPages": 3
+        }
+    ]
+}
+```
+
+**返回参数说明**
+
+| 参数名     | 类型 | 说明   |
+| ---------- | ---- | ------ |
+| totalCount | int  | 总条数 |
+| totalPages | int  | 总页数 |
+
 ### 注册
 
 **请求URL:**
@@ -60,13 +129,15 @@
  **返回示例**
 
 ``` json
- {
+{
     "Status": 0,
     "Msg": "SUCCESS",
     "Data": [
         {
-            "Guid": "95f1e723-eb3c-477d-9d0d-9d173d370fe4",
+            "Guid": "5e4eaab7-a7c3-478a-b3b1-c08f79e69441",
+            "UserId": 5,
             "Account": "qwer",
+            "PowerNum": 0,
             "Msg": null
         }
     ]
@@ -245,6 +316,33 @@
 |:-----  |:-----|-----                           |
 |Data[0] |string   |服务器端图片路径  |
 
+### 根据账号获取ID
+
+**请求URL:**
+
+- `https://www.barteam.cn:7705/api/user/getid?account=qwer`
+
+**请求方式:**
+
+- GET
+
+**参数:**
+
+| 参数    | 必选 | 类型   | 说明 |
+| ------- | ---- | ------ | ---- |
+| account | yes  | string | 账号 |
+
+**返回示例**
+
+```json
+{
+    "Status": 0,
+    "Msg": "SUCCESS",
+    "Data": [
+        5
+    ]
+}
+```
 
 ## 文章
 
@@ -773,7 +871,7 @@
 | totalCount | int  | 总条数 |
 | totalPages | int  | 总页数 |
 
-### 根据关键词搜索用户
+### 根据昵称关键词/权限/账号搜索用户
 
 **请求URL：** 
 
@@ -785,11 +883,13 @@
 
 **参数：** 
 
-| 参数名    | 必选 | 类型   | 说明     |
-| :-------- | :--- | :----- | -------- |
-| pagesize  | yes  | int    | 页面容量 |
-| pageindex | yes  | int    | 当前页面 |
-| keyword   | yes  | string | 关键词   |
+| 参数名    | 必选 | 类型   | 说明                 |
+| :-------- | :--- | :----- | -------------------- |
+| pagesize  | yes  | int    | 页面容量             |
+| pageindex | yes  | int    | 当前页面             |
+| keyword   | no   | string | 昵称关键词（三选一） |
+| powernum  | no   | int    | 权限等级（三选一）   |
+| account   | no   | string | 账号（三选一）       |
 
  **返回示例**
 
@@ -818,6 +918,94 @@
             ],
             "totalCount": 3,
             "totalPages": 1
+        }
+    ]
+}
+```
+
+**返回参数说明**
+
+| 参数名     | 类型 | 说明   |
+| ---------- | ---- | ------ |
+| totalCount | int  | 总条数 |
+| totalPages | int  | 总页数 |
+
+### 查询甲骨文
+
+**请求URL：** 
+
+- `api/search/oracle?keyword=拖`
+
+**请求方式：**
+
+- GET
+
+**参数：** 
+
+| 参数名  | 必选 | 类型   | 说明 |
+| :------ | :--- | :----- | ---- |
+| keyword | yes  | string | 字   |
+
+ **返回示例**
+
+``` json
+{
+    "Status": 0,
+    "Msg": "SUCCESS",
+    "Data": [
+        {
+            "CharId": 39,
+            "CharUrl": "images\\拖.png",
+            "CharMsg": "拖"
+        }
+    ]
+}
+```
+
+### 分页查询甲骨文
+
+**请求URL：** 
+
+- `api/search/oracle?pagesize=3&pageindex=1`
+
+**请求方式：**
+
+- GET
+
+**参数：** 
+
+| 参数名    | 必选 | 类型 | 说明     |
+| :-------- | :--- | :--- | -------- |
+| pagesize  | yes  | int  | 页面容量 |
+| pageindex | yes  | int  | 当前页面 |
+
+ **返回示例**
+
+``` json
+{
+    "Status": 0,
+    "Msg": "SUCCESS",
+    "Data": [
+        {
+            "charData": [
+                {
+                    "CharId": 1,
+                    "CharUrl": "images\\龙.svg",
+                    "CharMsg": "龙"
+                },
+                {
+                    "CharId": 2,
+                    "CharUrl": "images\\六.svg",
+                    "CharMsg": "六"
+                },
+                {
+                    "CharId": 3,
+                    "CharUrl": "images\\告.svg",
+                    "CharMsg": "告"
+                }
+            ],
+            "totalCount": 34,
+            "totalPages": 12
         }
     ]
 }

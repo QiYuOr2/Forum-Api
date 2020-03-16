@@ -29,5 +29,6 @@ namespace ForumApi.Models
         public virtual DbSet<CommentTb> CommentTb { get; set; }
         public virtual DbSet<LikeTb> LikeTb { get; set; }
         public virtual DbSet<RoleTb> RoleTb { get; set; }
+        public virtual DbSet<CharTb> CharTb { get; set; }
     }
 }

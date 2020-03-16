@@ -19,6 +19,61 @@ namespace ForumApi.Controllers
         private readonly ForumApiEntities db = new ForumApiEntities();
 
         /// <summary>
+        /// 展示所有User
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ResponseData<object> ShowAllUser(int pageSize, int pageIndex)
+        {
+            ResponseData<object> responseData;
+
+            try
+            {
+                var userList = from u in db.RoleTb
+                               where u.isDel == false
+                               select new
+                               {
+                                   u.roleId,
+                                   u.account,
+                                   u.avatarUrl,
+                                   u.powerNum,
+                                   u.nickName
+                               };
+
+                int totalCount = userList.Count();
+                int totalPages = Convert.ToInt32(Math.Ceiling((double)totalCount / pageSize));
+
+                if (userList != null)
+                {
+                    // 按热度排序
+                    userList =
+                        userList
+                        .OrderBy(u => u.roleId)
+                        .Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+                    List<object> res = new List<object>()
+                    {
+                        new { userList, totalCount, totalPages }
+                    };
+
+                    responseData = ResponseHelper<object>.SendSuccessResponse(res);
+                }
+                else
+                {
+                    responseData = ResponseHelper<object>.SendErrorResponse("暂无文章数据");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<object>.SendErrorResponse(ex.Message);
+            }
+
+            return responseData;
+        }
+
+        /// <summary>
         /// 注册 POST api/user/register
         /// </summary>
         /// <param name="entity"></param>
@@ -32,6 +87,7 @@ namespace ForumApi.Controllers
             RoleTb user = new RoleTb
             {
                 account = entity.account,
+                avatarUrl = "avatar//4f56e38d-1734-4f27-8e95-d542dedddfc8.jpg",
                 nickName = entity.nickName,
                 pwd = entity.pwd
             };
@@ -91,7 +147,7 @@ namespace ForumApi.Controllers
                 {
                     string guid = Guid.NewGuid().ToString();
 
-                    var loginUserMsg = ResponseHelper<object>.SetLoginMsg(guid, loginUser.account);
+                    var loginUserMsg = ResponseHelper<object>.SetLoginMsg(guid, loginUser.account, loginUser.roleId, loginUser.powerNum);
 
                     HttpContext.Current.Session[guid] = loginUser.account;
                     HttpContext.Current.Session.Timeout = 30;
@@ -238,7 +294,7 @@ namespace ForumApi.Controllers
 
                 if (powerNum != null)
                 {
-                    
+
                     responseData = ResponseHelper<int>.SendSuccessResponse(powerNum.AsEnumerable());
                 }
                 else
@@ -385,6 +441,36 @@ namespace ForumApi.Controllers
             else
             {
                 responseData = ResponseHelper<object>.SendErrorResponse("未登录", Models.StatusCode.OPERATION_ERROR);
+            }
+
+            return responseData;
+        }
+
+        [HttpGet]
+        [Route("getId")]
+        public ResponseData<int> GetUserIdByAccount(string account)
+        {
+            ResponseData<int> responseData;
+
+            try
+            {
+                var userId = from u in db.RoleTb
+                             where u.account == account
+                             select u.roleId;
+
+                if (userId != null)
+                {
+
+                    responseData = ResponseHelper<int>.SendSuccessResponse(userId.AsEnumerable());
+                }
+                else
+                {
+                    responseData = ResponseHelper<int>.SendErrorResponse("未找到此用户");
+                }
+            }
+            catch (Exception ex)
+            {
+                responseData = ResponseHelper<int>.SendErrorResponse(ex.Message);
             }
 
             return responseData;

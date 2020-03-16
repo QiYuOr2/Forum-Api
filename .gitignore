@@ -341,3 +341,6 @@ healthchecksdb
 
 # 头像文件夹
 avatars/
+
+# 甲骨文文件夹
+images/

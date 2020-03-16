@@ -59,11 +59,17 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.7\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.7\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -150,6 +156,9 @@
     <Compile Include="Models\ArticleTb.cs">
       <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CharTb.cs">
+      <DependentUpon>ForumEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CommentTb.cs">
       <DependentUpon>ForumEntities.tt</DependentUpon>
     </Compile>
@@ -180,6 +189,40 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="images\万.png" />
+    <Content Include="images\且.png" />
+    <Content Include="images\且.svg" />
+    <Content Include="images\互.png" />
+    <Content Include="images\仓.png" />
+    <Content Include="images\免.png" />
+    <Content Include="images\六.png" />
+    <Content Include="images\六.svg" />
+    <Content Include="images\农.png" />
+    <Content Include="images\华.png" />
+    <Content Include="images\告.svg" />
+    <Content Include="images\回.png" />
+    <Content Include="images\因.png" />
+    <Content Include="images\如.png" />
+    <Content Include="images\如.svg" />
+    <Content Include="images\孔.png" />
+    <Content Include="images\学.png" />
+    <Content Include="images\屯.png" />
+    <Content Include="images\拖.png" />
+    <Content Include="images\日.svg" />
+    <Content Include="images\曲.png" />
+    <Content Include="images\月.png" />
+    <Content Include="images\毛.png" />
+    <Content Include="images\氛.png" />
+    <Content Include="images\活.png" />
+    <Content Include="images\聪.png" />
+    <Content Include="images\裁.png" />
+    <Content Include="images\铛.png" />
+    <Content Include="images\长.svg" />
+    <Content Include="images\骗.png" />
+    <Content Include="images\骨.png" />
+    <Content Include="images\鸦.png" />
+    <Content Include="images\龙.png" />
+    <Content Include="images\龙.svg" />
     <Content Include="Models\ForumEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ForumEntities.edmx</DependentUpon>
@@ -210,7 +253,6 @@
       <DependentUpon>ForumEntities.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
-    <Content Include="README.md" />
     <None Include="Properties\PublishProfiles\ForumApi.pubxml" />
   </ItemGroup>
   <ItemGroup>

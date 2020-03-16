@@ -29,8 +29,8 @@ namespace ForumApi.Models
         public int powerNum { get; set; }
         public bool isDel { get; set; }
         public string avatarUrl { get; set; }
-        public string colm1 { get; set; }
         public string colm2 { get; set; }
+        public string openid { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ArticleTb> ArticleTb { get; set; }

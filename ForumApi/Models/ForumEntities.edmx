@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ForumApiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ForumApiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ArticleTb">
           <Key>
             <PropertyRef Name="articleId" />
@@ -19,6 +19,16 @@
           <Property Name="isDel" Type="bit" Nullable="false" />
           <Property Name="colm1" Type="nvarchar" MaxLength="16" />
           <Property Name="colm2" Type="nvarchar" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="CharTb">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharUrl" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="CharMsg" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="CharDes" Type="nvarchar" MaxLength="32" />
+          <Property Name="colm1" Type="nvarchar" MaxLength="16" />
         </EntityType>
         <EntityType Name="CommentTb">
           <Key>
@@ -53,7 +63,7 @@
           <Property Name="powerNum" Type="int" Nullable="false" />
           <Property Name="isDel" Type="bit" Nullable="false" />
           <Property Name="avatarUrl" Type="varchar" MaxLength="128" />
-          <Property Name="colm1" Type="nvarchar" MaxLength="16" />
+          <Property Name="openid" Type="nvarchar" MaxLength="128" />
           <Property Name="colm2" Type="nvarchar" MaxLength="16" />
         </EntityType>
         <Association Name="FK__ArticleTb__autho__5070F446">
@@ -118,6 +128,7 @@
         </Association>
         <EntityContainer Name="ForumApiModelStoreContainer">
           <EntitySet Name="ArticleTb" EntityType="Self.ArticleTb" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CharTb" EntityType="Self.CharTb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CommentTb" EntityType="Self.CommentTb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LikeTb" EntityType="Self.LikeTb" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleTb" EntityType="Self.RoleTb" Schema="dbo" store:Type="Tables" />
@@ -142,8 +153,7 @@
             <End Role="LikeTb" EntitySet="LikeTb" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ForumApiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -202,11 +212,11 @@
           <Property Name="powerNum" Type="Int32" Nullable="false" />
           <Property Name="isDel" Type="Boolean" Nullable="false" />
           <Property Name="avatarUrl" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="colm1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
           <Property Name="colm2" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ArticleTb" Relationship="Self.FK__ArticleTb__autho__5070F446" FromRole="RoleTb" ToRole="ArticleTb" />
           <NavigationProperty Name="CommentTb" Relationship="Self.FK__CommentTb__autho__5535A963" FromRole="RoleTb" ToRole="CommentTb" />
           <NavigationProperty Name="LikeTb" Relationship="Self.FK__LikeTb__userId__5AEE82B9" FromRole="RoleTb" ToRole="LikeTb" />
+          <Property Name="openid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__ArticleTb__autho__5070F446">
           <End Role="RoleTb" Type="Self.RoleTb" Multiplicity="1" />
@@ -293,7 +303,18 @@
             <End Role="RoleTb" EntitySet="RoleTb" />
             <End Role="LikeTb" EntitySet="LikeTb" />
           </AssociationSet>
+          <EntitySet Name="CharTb" EntityType="ForumApiModel.CharTb" />
         </EntityContainer>
+        <EntityType Name="CharTb">
+          <Key>
+            <PropertyRef Name="CharId" />
+          </Key>
+          <Property Name="CharId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharUrl" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="CharMsg" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="CharDes" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="colm1" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -343,6 +364,7 @@
           <EntitySetMapping Name="RoleTb">
             <EntityTypeMapping TypeName="ForumApiModel.RoleTb">
               <MappingFragment StoreEntitySet="RoleTb">
+                <ScalarProperty Name="openid" ColumnName="openid" />
                 <ScalarProperty Name="roleId" ColumnName="roleId" />
                 <ScalarProperty Name="account" ColumnName="account" />
                 <ScalarProperty Name="nickName" ColumnName="nickName" />
@@ -350,8 +372,18 @@
                 <ScalarProperty Name="powerNum" ColumnName="powerNum" />
                 <ScalarProperty Name="isDel" ColumnName="isDel" />
                 <ScalarProperty Name="avatarUrl" ColumnName="avatarUrl" />
-                <ScalarProperty Name="colm1" ColumnName="colm1" />
                 <ScalarProperty Name="colm2" ColumnName="colm2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CharTb">
+            <EntityTypeMapping TypeName="ForumApiModel.CharTb">
+              <MappingFragment StoreEntitySet="CharTb">
+                <ScalarProperty Name="colm1" ColumnName="colm1" />
+                <ScalarProperty Name="CharDes" ColumnName="CharDes" />
+                <ScalarProperty Name="CharMsg" ColumnName="CharMsg" />
+                <ScalarProperty Name="CharUrl" ColumnName="CharUrl" />
+                <ScalarProperty Name="CharId" ColumnName="CharId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -175,6 +175,15 @@ namespace ForumApi.Controllers
 
             try
             {
+                ArticleTb newArticle = db.ArticleTb.Where(a => a.isDel == false && a.articleId == articleId).FirstOrDefault();
+                if (newArticle != null)
+                {
+                    newArticle.viewCount++;
+
+                    db.Entry(newArticle).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+
                 var article = (from a in db.ArticleTb
                                where a.isDel == false
                                where a.articleId == articleId
